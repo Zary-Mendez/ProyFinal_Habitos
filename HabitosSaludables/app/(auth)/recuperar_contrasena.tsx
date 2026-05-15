@@ -1,4 +1,5 @@
 import { Colors } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
@@ -44,25 +45,22 @@ export default function ForgotPasswordScreen() {
       >
         <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
 
-          {/* Header */}
           <View style={styles.topDecoration}>
             <View style={styles.cloud1} />
             <View style={styles.cloud2} />
           </View>
 
-          {/* Botón volver */}
           <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
-            <Text style={styles.backText}>← Volver</Text>
+            <Ionicons name="arrow-back" size={20} color={Colors.textMedium} />
+            <Text style={styles.backText}>Volver</Text>
           </TouchableOpacity>
 
-          {/* Ícono */}
           <View style={styles.iconContainer}>
             <View style={styles.iconCircle}>
-              <Text style={styles.iconEmoji}>🔑</Text>
+              <Ionicons name="key-outline" size={36} color={Colors.primary} />
             </View>
           </View>
 
-          {/* Título */}
           <View style={styles.titleContainer}>
             <Text style={styles.title}>¿Olvidaste tu contraseña?</Text>
             <Text style={styles.subtitle}>
@@ -73,7 +71,6 @@ export default function ForgotPasswordScreen() {
           {!sent ? (
             <View style={styles.form}>
 
-              {/* Email */}
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>Correo electrónico registrado</Text>
                 <View style={[styles.inputWrapper, error ? styles.inputError : null]}>
@@ -86,10 +83,13 @@ export default function ForgotPasswordScreen() {
                     keyboardType="email-address"
                     autoCapitalize="none"
                   />
-                  <Text style={styles.inputIcon}>✉️</Text>
+                  <Ionicons name="mail-outline" size={20} color={Colors.textLight} />
                 </View>
                 {error ? (
-                  <Text style={styles.errorText}>{error}</Text>
+                  <View style={styles.errorRow}>
+                    <Ionicons name="alert-circle-outline" size={14} color={Colors.error} />
+                    <Text style={styles.errorText}>{error}</Text>
+                  </View>
                 ) : (
                   <Text style={styles.hintText}>
                     Ingresa el correo con el que te registraste
@@ -97,20 +97,20 @@ export default function ForgotPasswordScreen() {
                 )}
               </View>
 
-              {/* Info 24h */}
               <View style={styles.infoBox}>
-                <Text style={styles.infoIcon}>ℹ️</Text>
+                <Ionicons name="information-circle-outline" size={20} color={Colors.primary} />
                 <Text style={styles.infoText}>
-                  Recibirás un enlace válido por <Text style={styles.infoBold}>24 horas</Text>. Si no lo ves en tu bandeja, revisa la carpeta de spam.
+                  Recibirás un enlace válido por{' '}
+                  <Text style={styles.infoBold}>24 horas</Text>. Si no lo ves
+                  en tu bandeja, revisa la carpeta de spam.
                 </Text>
               </View>
 
-              {/* Botón enviar */}
               <TouchableOpacity style={styles.btnPrimary} onPress={handleSend}>
                 <Text style={styles.btnPrimaryText}>Enviar enlace</Text>
+                <Ionicons name="send-outline" size={18} color={Colors.white} />
               </TouchableOpacity>
 
-              {/* Volver al login */}
               <View style={styles.loginContainer}>
                 <Text style={styles.loginText}>¿Recordaste tu contraseña? </Text>
                 <TouchableOpacity onPress={() => router.push('/(auth)/login')}>
@@ -120,20 +120,22 @@ export default function ForgotPasswordScreen() {
 
             </View>
           ) : (
-            // Pantalla de éxito
             <View style={styles.successContainer}>
               <View style={styles.successIcon}>
-                <Text style={styles.successEmoji}>✅</Text>
+                <Ionicons name="checkmark-circle" size={48} color={Colors.primary} />
               </View>
               <Text style={styles.successTitle}>¡Enlace enviado!</Text>
               <Text style={styles.successText}>
-                Revisa tu correo <Text style={styles.successEmail}>{email}</Text> y sigue las instrucciones para restablecer tu contraseña.
+                Revisa tu correo{' '}
+                <Text style={styles.successEmail}>{email}</Text>{' '}
+                y sigue las instrucciones para restablecer tu contraseña.
               </Text>
               <TouchableOpacity
                 style={styles.btnPrimary}
                 onPress={() => router.push('/(auth)/login')}
               >
                 <Text style={styles.btnPrimaryText}>Volver al inicio de sesión</Text>
+                <Ionicons name="arrow-forward" size={20} color={Colors.white} />
               </TouchableOpacity>
             </View>
           )}
@@ -181,8 +183,11 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   backBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 24,
     paddingTop: 16,
+    gap: 6,
   },
   backText: {
     fontSize: 14,
@@ -202,9 +207,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 2,
     borderColor: Colors.border,
-  },
-  iconEmoji: {
-    fontSize: 36,
   },
   titleContainer: {
     paddingHorizontal: 24,
@@ -256,19 +258,18 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: Colors.textDark,
   },
-  inputIcon: {
-    fontSize: 16,
-    marginLeft: 8,
+  errorRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
   errorText: {
     fontSize: 12,
     color: Colors.error,
-    marginTop: 2,
   },
   hintText: {
     fontSize: 12,
     color: Colors.textLight,
-    marginTop: 2,
   },
   infoBox: {
     flexDirection: 'row',
@@ -277,9 +278,6 @@ const styles = StyleSheet.create({
     padding: 14,
     gap: 10,
     alignItems: 'flex-start',
-  },
-  infoIcon: {
-    fontSize: 16,
   },
   infoText: {
     flex: 1,
@@ -297,11 +295,10 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: 'center',
     marginTop: 8,
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
     elevation: 4,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 8,
   },
   btnPrimaryText: {
     color: Colors.white,
@@ -329,15 +326,12 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   successIcon: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
     backgroundColor: Colors.primaryLight,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  successEmoji: {
-    fontSize: 36,
   },
   successTitle: {
     fontSize: 24,

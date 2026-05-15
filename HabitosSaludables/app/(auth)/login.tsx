@@ -1,4 +1,5 @@
 import { Colors } from '@/constants/theme';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
@@ -35,7 +36,6 @@ export default function LoginScreen() {
 
   const handleLogin = () => {
     if (validate()) {
-      // Por ahora navegamos directo al dashboard
       router.replace('/(tabs)');
     }
   };
@@ -48,18 +48,16 @@ export default function LoginScreen() {
       >
         <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
 
-          {/* Header */}
           <View style={styles.topDecoration}>
             <View style={styles.cloud1} />
             <View style={styles.cloud2} />
           </View>
 
-          {/* Botón volver */}
           <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
-            <Text style={styles.backText}>← Volver</Text>
+            <Ionicons name="arrow-back" size={20} color={Colors.textMedium} />
+            <Text style={styles.backText}>Volver</Text>
           </TouchableOpacity>
 
-          {/* Título */}
           <View style={styles.titleContainer}>
             <Text style={styles.greeting}>¡Hola de nuevo! 👋</Text>
             <Text style={styles.subtitle}>
@@ -67,7 +65,6 @@ export default function LoginScreen() {
             </Text>
           </View>
 
-          {/* Formulario */}
           <View style={styles.form}>
 
             {/* Email */}
@@ -83,9 +80,14 @@ export default function LoginScreen() {
                   keyboardType="email-address"
                   autoCapitalize="none"
                 />
-                <Text style={styles.inputIcon}>✉️</Text>
+                <Ionicons name="mail-outline" size={20} color={Colors.textLight} />
               </View>
-              {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+              {errors.email && (
+                <View style={styles.errorRow}>
+                  <Ionicons name="alert-circle-outline" size={14} color={Colors.error} />
+                  <Text style={styles.errorText}>{errors.email}</Text>
+                </View>
+              )}
             </View>
 
             {/* Contraseña */}
@@ -101,13 +103,21 @@ export default function LoginScreen() {
                   secureTextEntry={!showPassword}
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                  <Text style={styles.inputIcon}>{showPassword ? '🙈' : '👁️'}</Text>
+                  <Ionicons
+                    name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                    size={20}
+                    color={Colors.textLight}
+                  />
                 </TouchableOpacity>
               </View>
-              {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
+              {errors.password && (
+                <View style={styles.errorRow}>
+                  <Ionicons name="alert-circle-outline" size={14} color={Colors.error} />
+                  <Text style={styles.errorText}>{errors.password}</Text>
+                </View>
+              )}
             </View>
 
-            {/* Olvidaste contraseña */}
             <TouchableOpacity
               style={styles.forgotBtn}
               onPress={() => router.push('/(auth)/recuperar_contrasena')}
@@ -115,12 +125,11 @@ export default function LoginScreen() {
               <Text style={styles.forgotText}>¿Olvidaste tu contraseña?</Text>
             </TouchableOpacity>
 
-            {/* Botón login */}
             <TouchableOpacity style={styles.btnPrimary} onPress={handleLogin}>
               <Text style={styles.btnPrimaryText}>Iniciar sesión</Text>
+              <Ionicons name="arrow-forward" size={20} color={Colors.white} />
             </TouchableOpacity>
 
-            {/* Registro */}
             <View style={styles.registerContainer}>
               <Text style={styles.registerText}>¿No tienes cuenta? </Text>
               <TouchableOpacity onPress={() => router.push('/(auth)/registro')}>
@@ -171,8 +180,11 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   backBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 24,
     paddingTop: 16,
+    gap: 6,
   },
   backText: {
     fontSize: 14,
@@ -226,14 +238,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: Colors.textDark,
   },
-  inputIcon: {
-    fontSize: 16,
-    marginLeft: 8,
+  errorRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
   errorText: {
     fontSize: 12,
     color: Colors.error,
-    marginTop: 2,
   },
   forgotBtn: {
     alignSelf: 'flex-end',
@@ -250,11 +262,10 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: 'center',
     marginTop: 8,
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
     elevation: 4,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 8,
   },
   btnPrimaryText: {
     color: Colors.white,

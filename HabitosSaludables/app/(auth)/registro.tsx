@@ -1,4 +1,5 @@
 import { Colors } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
@@ -66,18 +67,16 @@ export default function RegisterScreen() {
       >
         <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
 
-          {/* Header */}
           <View style={styles.topDecoration}>
             <View style={styles.cloud1} />
             <View style={styles.cloud2} />
           </View>
 
-          {/* Botón volver */}
           <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
-            <Text style={styles.backText}>← Volver</Text>
+            <Ionicons name="arrow-back" size={20} color={Colors.textMedium} />
+            <Text style={styles.backText}>Volver</Text>
           </TouchableOpacity>
 
-          {/* Título */}
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Crear cuenta 🌱</Text>
             <Text style={styles.subtitle}>
@@ -85,7 +84,6 @@ export default function RegisterScreen() {
             </Text>
           </View>
 
-          {/* Formulario */}
           <View style={styles.form}>
 
             {/* Nombre */}
@@ -99,9 +97,14 @@ export default function RegisterScreen() {
                   value={form.name}
                   onChangeText={(v) => updateForm('name', v)}
                 />
-                <Text style={styles.inputIcon}>👤</Text>
+                <Ionicons name="person-outline" size={20} color={Colors.textLight} />
               </View>
-              {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
+              {errors.name && (
+                <View style={styles.errorRow}>
+                  <Ionicons name="alert-circle-outline" size={14} color={Colors.error} />
+                  <Text style={styles.errorText}>{errors.name}</Text>
+                </View>
+              )}
             </View>
 
             {/* Email */}
@@ -117,9 +120,14 @@ export default function RegisterScreen() {
                   keyboardType="email-address"
                   autoCapitalize="none"
                 />
-                <Text style={styles.inputIcon}>✉️</Text>
+                <Ionicons name="mail-outline" size={20} color={Colors.textLight} />
               </View>
-              {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+              {errors.email && (
+                <View style={styles.errorRow}>
+                  <Ionicons name="alert-circle-outline" size={14} color={Colors.error} />
+                  <Text style={styles.errorText}>{errors.email}</Text>
+                </View>
+              )}
             </View>
 
             {/* Fecha nacimiento */}
@@ -134,9 +142,14 @@ export default function RegisterScreen() {
                   onChangeText={(v) => updateForm('birthdate', v)}
                   keyboardType="numeric"
                 />
-                <Text style={styles.inputIcon}>📅</Text>
+                <Ionicons name="calendar-outline" size={20} color={Colors.textLight} />
               </View>
-              {errors.birthdate && <Text style={styles.errorText}>{errors.birthdate}</Text>}
+              {errors.birthdate && (
+                <View style={styles.errorRow}>
+                  <Ionicons name="alert-circle-outline" size={14} color={Colors.error} />
+                  <Text style={styles.errorText}>{errors.birthdate}</Text>
+                </View>
+              )}
             </View>
 
             {/* Contraseña */}
@@ -152,10 +165,19 @@ export default function RegisterScreen() {
                   secureTextEntry={!showPassword}
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                  <Text style={styles.inputIcon}>{showPassword ? '🙈' : '👁️'}</Text>
+                  <Ionicons
+                    name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                    size={20}
+                    color={Colors.textLight}
+                  />
                 </TouchableOpacity>
               </View>
-              {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
+              {errors.password && (
+                <View style={styles.errorRow}>
+                  <Ionicons name="alert-circle-outline" size={14} color={Colors.error} />
+                  <Text style={styles.errorText}>{errors.password}</Text>
+                </View>
+              )}
             </View>
 
             {/* Confirmar contraseña */}
@@ -171,18 +193,27 @@ export default function RegisterScreen() {
                   secureTextEntry={!showConfirm}
                 />
                 <TouchableOpacity onPress={() => setShowConfirm(!showConfirm)}>
-                  <Text style={styles.inputIcon}>{showConfirm ? '🙈' : '👁️'}</Text>
+                  <Ionicons
+                    name={showConfirm ? 'eye-off-outline' : 'eye-outline'}
+                    size={20}
+                    color={Colors.textLight}
+                  />
                 </TouchableOpacity>
               </View>
-              {errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword}</Text>}
+              {errors.confirmPassword && (
+                <View style={styles.errorRow}>
+                  <Ionicons name="alert-circle-outline" size={14} color={Colors.error} />
+                  <Text style={styles.errorText}>{errors.confirmPassword}</Text>
+                </View>
+              )}
             </View>
 
             {/* Botón registro */}
             <TouchableOpacity style={styles.btnPrimary} onPress={handleRegister}>
-              <Text style={styles.btnPrimaryText}>Crear cuenta →</Text>
+              <Text style={styles.btnPrimaryText}>Crear cuenta</Text>
+              <Ionicons name="arrow-forward" size={20} color={Colors.white} />
             </TouchableOpacity>
 
-            {/* Login */}
             <View style={styles.loginContainer}>
               <Text style={styles.loginText}>¿Ya tienes cuenta? </Text>
               <TouchableOpacity onPress={() => router.push('/(auth)/login')}>
@@ -234,8 +265,11 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   backBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 24,
     paddingTop: 16,
+    gap: 6,
   },
   backText: {
     fontSize: 14,
@@ -289,14 +323,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: Colors.textDark,
   },
-  inputIcon: {
-    fontSize: 16,
-    marginLeft: 8,
+  errorRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
   errorText: {
     fontSize: 12,
     color: Colors.error,
-    marginTop: 2,
   },
   btnPrimary: {
     backgroundColor: Colors.primary,
@@ -304,11 +338,10 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: 'center',
     marginTop: 8,
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
     elevation: 4,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 8,
   },
   btnPrimaryText: {
     color: Colors.white,
