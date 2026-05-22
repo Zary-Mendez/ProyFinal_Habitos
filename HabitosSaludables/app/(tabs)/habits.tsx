@@ -155,16 +155,10 @@ export default function HabitsScreen() {
           <View>
             <Text style={styles.headerTitle}>Mis Hábitos</Text>
             <Text style={styles.headerSub}>
-              {completedCount} de {todayHabits.length} completados hoy
+              {completedCount} de {todayHabits.length} completados
             </Text>
           </View>
-          <TouchableOpacity
-            style={styles.addBtn}
-            onPress={() => setModalVisible(true)}
-            activeOpacity={0.8}
-          >
-            <Ionicons name="add" size={24} color={Colors.white} />
-          </TouchableOpacity>
+          
         </View>
       </View>
 
@@ -228,6 +222,14 @@ export default function HabitsScreen() {
         )}
         <View style={{ height: 24 }} />
       </ScrollView>
+
+      <TouchableOpacity
+            style={styles.addBtn}
+            onPress={() => setModalVisible(true)}
+            activeOpacity={0.8}
+          >
+            <Ionicons name="add" size={24} color={Colors.white} />
+      </TouchableOpacity>
 
       {/* ── Modal agregar hábito ── */}
       <Modal
@@ -426,7 +428,7 @@ const styles = StyleSheet.create({
   },
   headerContent: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'flex-end',
   },
   headerTitle: {
@@ -440,9 +442,11 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   addBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    left: 350,
+    bottom: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 40,
     backgroundColor: Colors.primary,
     justifyContent: 'center',
     alignItems: 'center',

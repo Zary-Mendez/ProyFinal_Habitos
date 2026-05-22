@@ -1,6 +1,6 @@
 // context/AppContext.tsx
-
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { createContext, useEffect, useContext, useState, useCallback, ReactNode } from 'react';
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
 
@@ -158,7 +158,7 @@ const DEFAULT_FEMININE: FeminineCycleData = {
   currentPhase: 'follicular',
 };
 
-const DEFAULT_USER: UserProfile = {
+export const DEFAULT_USER: UserProfile = {
   name: '',
   email: '',
   selectedHabits: ['hydration', 'exercise', 'sleep'],
@@ -237,6 +237,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [bestStreak, setBestStreak] = useState(0);
   const [feminineData, setFeminineData] = useState<FeminineCycleData>(DEFAULT_FEMININE);
   const [isOnboarded, setIsOnboarded] = useState(false);
+  // Cargar nombre guardado al iniciar la app
+useEffect(() => {
+  AsyncStorage.getItem('userName').then((savedName) => {
+    if (savedName) {
+      setUserState({ ...DEFAULT_USER, name: savedName });
+        }
+      });
+    }, []);
 
   // ── Usuario ──────────────────────────────────────────────────────────────
 

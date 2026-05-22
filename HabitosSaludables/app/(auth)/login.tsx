@@ -1,5 +1,7 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useApp, DEFAULT_USER } from '@/context/AppContext';
 import { Colors } from '@/constants/theme';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
@@ -15,13 +17,18 @@ import {
 } from 'react-native';
 
 export default function LoginScreen() {
+  const { setUser } = useApp();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string }>({});
 
   const validate = () => {
-    const newErrors: { email?: string; password?: string } = {};
+    const newErrors: { name?: string; email?: string; password?: string } = {};
+    if (!name || name.trim().length < 2) {
+      newErrors.name = 'Ingresa tu nombre';
+    }
     if (!email) {
       newErrors.email = 'El correo es requerido';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
@@ -34,9 +41,11 @@ export default function LoginScreen() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleLogin = () => {
-    if (validate()) {
-      router.replace('/onboarding/step1');
+  const handleLogin = async () => {
+  if (validate()) {
+    await AsyncStorage.setItem('userName', name.trim());
+    setUser({ ...DEFAULT_USER, name: name.trim(), email });
+    router.replace('/onboarding/step1');
     }
   };
 
@@ -48,8 +57,7 @@ export default function LoginScreen() {
       >
         <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
 
-          <View style={styles.topDecoration}>
-          </View>
+          <View style={styles.topDecoration} />
 
           <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
             <Ionicons name="arrow-back" size={20} color={Colors.textMedium} />
@@ -57,13 +65,36 @@ export default function LoginScreen() {
           </TouchableOpacity>
 
           <View style={styles.titleContainer}>
-            <Text style={styles.greeting}>¡Hola de nuevo! 👋</Text>
+            <Text style={styles.greeting}>¡Hola de nuevo!</Text>
             <Text style={styles.subtitle}>
               Ingresa tus datos para continuar con tus hábitos
             </Text>
           </View>
 
           <View style={styles.form}>
+
+            {/* Nombre */}
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Nombre</Text>
+              <View style={[styles.inputWrapper, errors.name ? styles.inputError : null]}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Tu nombre"
+                  placeholderTextColor={Colors.textPlaceholder}
+                  value={name}
+                  onChangeText={setName}
+                  autoCapitalize="words"
+                  returnKeyType="next"
+                />
+                <Ionicons name="person-outline" size={20} color={Colors.textLight} />
+              </View>
+              {errors.name && (
+                <View style={styles.errorRow}>
+                  <Ionicons name="alert-circle-outline" size={14} color={Colors.error} />
+                  <Text style={styles.errorText}>{errors.name}</Text>
+                </View>
+              )}
+            </View>
 
             {/* Email */}
             <View style={styles.inputGroup}>
@@ -77,6 +108,7 @@ export default function LoginScreen() {
                   onChangeText={setEmail}
                   keyboardType="email-address"
                   autoCapitalize="none"
+                  returnKeyType="next"
                 />
                 <Ionicons name="mail-outline" size={20} color={Colors.textLight} />
               </View>
@@ -99,6 +131,8 @@ export default function LoginScreen() {
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry={!showPassword}
+                  returnKeyType="done"
+                  onSubmitEditing={handleLogin}
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                   <Ionicons

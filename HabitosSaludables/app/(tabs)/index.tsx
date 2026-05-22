@@ -164,28 +164,13 @@ export default function DashboardScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* ── Encabezado decorativo ── */}
-        <View style={styles.header}>
-
-          <View style={styles.headerContent}>
-            <View>
-              <Text style={styles.greeting}>
-                ¡Hola, {user?.name || 'amiga'}! 👋
-              </Text>
-              <Text style={styles.dateText}>
-                {dayName.charAt(0).toUpperCase() + dayName.slice(1)},{' '}
-                {dateStr}
-              </Text>
+        {/* Avatar + datos */}
+        <View style={styles.card}>
+              <View style={styles.userInfo}>
+            <Text style={styles.userName}> ¡Hola, { user?.name || 'Usuario'}!</Text>
             </View>
-            <TouchableOpacity
-              style={styles.notifBtn}
-              onPress={() => router.push('/(tabs)/profile')}
-            >
-              <Ionicons name="notifications-outline" size={22} color={Colors.textDark} />
-            </TouchableOpacity>
           </View>
-        </View>
-
+        
         {/* ── Frase motivacional ── */}
         <View style={styles.quoteCard}>
           <Ionicons name="sparkles" size={16} color={Colors.primary} />
@@ -334,29 +319,9 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     paddingHorizontal: 24,
   },
-  headerCloud1: {
-    position: 'absolute',
-    top: 16,
-    right: 60,
-    width: 60,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: Colors.white,
-    opacity: 0.6,
-  },
-  headerCloud2: {
-    position: 'absolute',
-    top: 28,
-    right: 30,
-    width: 40,
-    height: 18,
-    borderRadius: 9,
-    backgroundColor: Colors.white,
-    opacity: 0.4,
-  },
   headerContent: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'flex-end',
   },
   greeting: {
@@ -369,14 +334,42 @@ const styles = StyleSheet.create({
     color: Colors.textMedium,
     marginTop: 2,
   },
-  notifBtn: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+
+  // Card genérica
+  card: {
     backgroundColor: Colors.white,
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    padding: 18,
+    marginBottom: 16,
     elevation: 2,
+    shadowColor: Colors.shadow,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 4,
+  },
+  
+  userInfo: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  userName: {
+    justifyContent: 'center',
+    fontSize: 18,
+    fontWeight: '700',
+    color: Colors.textDark,
+  },
+  goalBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: Colors.primaryLight,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    alignSelf: 'flex-start',
+    marginTop: 6,
   },
 
   // Frase motivacional

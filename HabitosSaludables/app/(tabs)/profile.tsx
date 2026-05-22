@@ -47,11 +47,6 @@ export default function ProfileScreen() {
     <SafeAreaView style={styles.safe}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
 
-        {/* Encabezado decorativo */}
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Mi Perfil</Text>
-          <Text style={styles.headerSub}>Tu información y configuración</Text>
-        </View>
 
         <View style={styles.content}>
 

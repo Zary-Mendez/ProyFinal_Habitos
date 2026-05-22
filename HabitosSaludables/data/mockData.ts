@@ -319,13 +319,13 @@ export const CATEGORIES = {
 // ─── Frases motivacionales ────────────────────────────────────────────────────
 
 export const MOTIVATIONAL_QUOTES = [
-  'Cada pequeño paso cuenta. ¡Tú puedes!',
-  'La constancia es la clave del cambio.',
-  'Hoy es un buen día para cuidarte.',
-  'Los hábitos de hoy son tu salud de mañana.',
-  'Un día a la vez, un hábito a la vez.',
-  'Tu bienestar es tu mayor inversión.',
-  'Celebra cada logro, por pequeño que sea.',
+  'Tu mejor versión se construye con lo que haces hoy.',
+  'No necesitas hacerlo perfecto, necesitas empezar.',
+  'Cada hábito saludable es una victoria contra tu antiguo yo.',
+  'Hoy eliges cuidarte, mañana tu cuerpo te lo agradecerá.',
+  'La disciplina de hoy será la energía de mañana.',
+  'No estás cambiando tu rutina, estás transformando tu vida.',
+  'Un pequeño avance diario crea resultados extraordinarios.',
 ];
 
 export function getDailyQuote(): string {

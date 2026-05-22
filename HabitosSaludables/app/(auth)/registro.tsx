@@ -68,8 +68,6 @@ export default function RegisterScreen() {
         <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
 
           <View style={styles.topDecoration}>
-            <View style={styles.cloud1} />
-            <View style={styles.cloud2} />
           </View>
 
           <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
@@ -78,9 +76,9 @@ export default function RegisterScreen() {
           </TouchableOpacity>
 
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Crear cuenta 🌱</Text>
+            <Text style={styles.title}>Crear cuenta</Text>
             <Text style={styles.subtitle}>
-              Completa tus datos para empezar tu journey de hábitos
+              Completa tus datos para empezar tu seguimiento de hábitos
             </Text>
           </View>
 
@@ -243,26 +241,6 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
     overflow: 'hidden',
-  },
-  cloud1: {
-    position: 'absolute',
-    width: 100,
-    height: 50,
-    backgroundColor: Colors.white,
-    borderRadius: 25,
-    top: 20,
-    left: 30,
-    opacity: 0.7,
-  },
-  cloud2: {
-    position: 'absolute',
-    width: 80,
-    height: 40,
-    backgroundColor: Colors.white,
-    borderRadius: 20,
-    top: 35,
-    right: 40,
-    opacity: 0.6,
   },
   backBtn: {
     flexDirection: 'row',
