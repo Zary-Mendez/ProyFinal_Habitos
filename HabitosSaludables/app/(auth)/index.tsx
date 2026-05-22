@@ -15,8 +15,6 @@ export default function WelcomeScreen() {
     <SafeAreaView style={styles.container}>
       {/* Nubes decorativas arriba */}
       <View style={styles.topDecoration}>
-        <View style={styles.cloud1} />
-        <View style={styles.cloud2} />
       </View>
 
       {/* Logo e ícono */}
@@ -88,26 +86,6 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 40,
     overflow: 'hidden',
     position: 'relative',
-  },
-  cloud1: {
-    position: 'absolute',
-    width: 100,
-    height: 50,
-    backgroundColor: Colors.white,
-    borderRadius: 25,
-    top: 20,
-    left: 30,
-    opacity: 0.7,
-  },
-  cloud2: {
-    position: 'absolute',
-    width: 80,
-    height: 40,
-    backgroundColor: Colors.white,
-    borderRadius: 20,
-    top: 35,
-    right: 40,
-    opacity: 0.6,
   },
   logoContainer: {
     alignItems: 'center',

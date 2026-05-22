@@ -55,7 +55,7 @@ export default function RegisterScreen() {
 
   const handleRegister = () => {
     if (validate()) {
-      router.replace('/(tabs)');
+      router.replace('/onboarding/step1');  // ← cambio aquí
     }
   };
 
