@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Switch,
-  Alert,
+  Modal,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
@@ -18,6 +18,7 @@ import { Colors } from '@/constants/theme';
 export default function ProfileScreen() {
   const { user, streak, bestStreak, weekHistory, logout } = useApp();
   const [remindersOn, setRemindersOn] = useState(true);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const totalCompleted = weekHistory.reduce((acc, d) => acc + d.completed, 0);
 
@@ -25,28 +26,15 @@ export default function ProfileScreen() {
     ? user.name.trim().split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase()
     : '?';
 
-  const handleLogout = () => {
-    Alert.alert(
-      'Cerrar sesión',
-      '¿Estás seguro de que quieres salir?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Salir',
-          style: 'destructive',
-          onPress: () => {
-            logout();
-            router.replace('/(auth)');
-          },
-        },
-      ]
-    );
+  const confirmLogout = () => {
+    setShowLogoutModal(false);
+    logout();
+    router.replace('/(auth)' as any);
   };
 
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
-
 
         <View style={styles.content}>
 
@@ -119,6 +107,7 @@ export default function ProfileScreen() {
               </View>
             </>
           )}
+
           {/* Configuración */}
           <Text style={styles.sectionLabel}>Configuración</Text>
           <View style={styles.card}>
@@ -205,13 +194,58 @@ export default function ProfileScreen() {
           </View>
 
           {/* Botón cerrar sesión */}
-          <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout} activeOpacity={0.8}>
+          <TouchableOpacity
+            style={styles.logoutBtn}
+            onPress={() => setShowLogoutModal(true)}
+            activeOpacity={0.8}
+          >
             <Ionicons name="log-out-outline" size={20} color={Colors.error} />
             <Text style={styles.logoutText}>Cerrar sesión</Text>
           </TouchableOpacity>
 
         </View>
       </ScrollView>
+
+      {/* ── Modal confirmar cierre de sesión ── */}
+      <Modal
+        visible={showLogoutModal}
+        animationType="fade"
+        transparent
+        onRequestClose={() => setShowLogoutModal(false)}
+      >
+        <View style={styles.confirmOverlay}>
+          <View style={styles.confirmSheet}>
+
+            <View style={styles.confirmIconBox}>
+              <Ionicons name="log-out-outline" size={28} color={Colors.error} />
+            </View>
+
+            <Text style={styles.confirmTitle}>Cerrar sesión</Text>
+            <Text style={styles.confirmMsg}>
+              ¿Estás seguro de que quieres salir de tu cuenta?
+            </Text>
+
+            <View style={styles.confirmBtns}>
+              <TouchableOpacity
+                style={styles.confirmCancel}
+                onPress={() => setShowLogoutModal(false)}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.confirmCancelText}>Cancelar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.confirmLogout}
+                onPress={confirmLogout}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.confirmLogoutText}>Salir</Text>
+              </TouchableOpacity>
+            </View>
+
+          </View>
+        </View>
+      </Modal>
+
     </SafeAreaView>
   );
 }
@@ -223,30 +257,6 @@ const styles = StyleSheet.create({
   },
   scroll: {
     paddingBottom: 40,
-  },
-
-  // Encabezado
-  header: {
-    height: 110,
-    backgroundColor: '#C8EDD4',
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-    position: 'relative',
-  },
-  headerTitle: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: Colors.textDark,
-    zIndex: 1,
-  },
-  headerSub: {
-    fontSize: 13,
-    color: Colors.textMedium,
-    marginTop: 2,
-    zIndex: 1,
   },
 
   content: {
@@ -422,7 +432,7 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
 
-  // Logout
+  // Logout button
   logoutBtn: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -440,5 +450,83 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '700',
     color: Colors.error,
+  },
+
+  // Modal de confirmación
+  confirmOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.45)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 32,
+  },
+  confirmSheet: {
+    backgroundColor: Colors.white,
+    borderRadius: 20,
+    paddingHorizontal: 24,
+    paddingTop: 32,
+    paddingBottom: 24,
+    width: '100%',
+    alignItems: 'center',
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+  },
+  confirmIconBox: {
+    width: 60,
+    height: 60,
+    borderRadius: 18,
+    backgroundColor: Colors.errorLight,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#FFCDD2',
+  },
+  confirmTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: Colors.textDark,
+    marginBottom: 8,
+  },
+  confirmMsg: {
+    fontSize: 14,
+    color: Colors.textMedium,
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 24,
+  },
+  confirmBtns: {
+    flexDirection: 'row',
+    gap: 12,
+    width: '100%',
+  },
+  confirmCancel: {
+    flex: 1,
+    paddingVertical: 14,
+    borderRadius: 12,
+    backgroundColor: Colors.background,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    alignItems: 'center',
+  },
+  confirmCancelText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: Colors.textMedium,
+  },
+  confirmLogout: {
+    flex: 1,
+    paddingVertical: 14,
+    borderRadius: 12,
+    backgroundColor: Colors.error,
+    alignItems: 'center',
+  },
+  confirmLogoutText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: Colors.white,
   },
 });
