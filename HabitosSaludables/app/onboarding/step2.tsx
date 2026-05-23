@@ -91,7 +91,7 @@ export default function OnboardingStep2() {
           <Ionicons name="arrow-back" size={20} color={Colors.textMedium} />
         </TouchableOpacity>
         <View style={styles.headerText}>
-          <Text style={styles.title}>¿Qué hábitos quieres{'\n'}trabajar? 🎯</Text>
+          <Text style={styles.title}>¿Qué hábitos quieres{'\n'}trabajar?</Text>
           <Text style={styles.subtitle}>
             Selecciona uno o más. Puedes cambiarlos después.
           </Text>
@@ -150,7 +150,6 @@ export default function OnboardingStep2() {
           disabled={selected.length === 0}
         >
           <Text style={styles.btnPrimaryText}>Continuar</Text>
-          <Ionicons name="arrow-forward" size={20} color={Colors.white} />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.btnSkip} onPress={() => router.push('/onboarding/step3')}>

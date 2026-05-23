@@ -54,7 +54,7 @@ export default function OnboardingStep3() {
           <Ionicons name="arrow-back" size={20} color={Colors.textMedium} />
         </TouchableOpacity>
         <View style={styles.headerText}>
-          <Text style={styles.title}>Últimos detalles ⚙️</Text>
+          <Text style={styles.title}>Últimos detalles</Text>
           <Text style={styles.subtitle}>
             Configura tus preferencias para recibir recordatorios en el momento ideal.
           </Text>

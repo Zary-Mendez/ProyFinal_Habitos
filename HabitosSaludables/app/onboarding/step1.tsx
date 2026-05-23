@@ -30,20 +30,12 @@ export default function OnboardingStep1() {
               <MaterialCommunityIcons name="leaf" size={64} color={Colors.primary} />
             </View>
           </View>
-          <View style={[styles.bubble, styles.bubble1]}>
-            <Ionicons name="sunny-outline" size={20} color={Colors.primary} />
           </View>
-          <View style={[styles.bubble, styles.bubble2]}>
-            <Ionicons name="heart-outline" size={20} color={Colors.feminine} />
-          </View>
-          <View style={[styles.bubble, styles.bubble3]}>
-            <MaterialCommunityIcons name="run" size={20} color={Colors.primary} />
-          </View>
-        </View>
+        
 
         {/* Texto */}
         <View style={styles.textContainer}>
-          <Text style={styles.title}>¡Bienvenido a{'\n'}HabitFlow! 🌿</Text>
+          <Text style={styles.title}>¡Bienvenido a{'\n'}HabitFlow!</Text>
           <Text style={styles.subtitle}>
             Estás a punto de comenzar un camino hacia una vida más saludable y equilibrada.
             Vamos a personalizar tu experiencia en solo 2 pasos.
@@ -73,7 +65,6 @@ export default function OnboardingStep1() {
             onPress={() => router.push('/onboarding/step2')}
           >
             <Text style={styles.btnPrimaryText}>Empezar personalización</Text>
-            <Ionicons name="arrow-forward" size={20} color={Colors.white} />
           </TouchableOpacity>
 
           <TouchableOpacity

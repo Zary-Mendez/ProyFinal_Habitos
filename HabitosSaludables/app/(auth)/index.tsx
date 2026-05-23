@@ -51,9 +51,12 @@ export default function WelcomeScreen() {
           <Text style={styles.btnSecondaryText}>Iniciar sesión</Text>
         </TouchableOpacity>
 
-        <Text style={styles.termsText}>
-          Al continuar aceptas los Términos y la Política de privacidad
-        </Text>
+        <View style={styles.registerContainer}>
+          <Text style={styles.registerText}>Al continuar aceptas los </Text>
+          <TouchableOpacity onPress={() => router.push('/(auth)/registro')}>
+            <Text style={styles.registerLink}>Términos y la Política de privacidad</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -203,5 +206,19 @@ const styles = StyleSheet.create({
     color: Colors.textLight,
     textAlign: 'center',
     marginTop: 4,
+  },
+  registerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 8,
+  },
+  registerText: {
+    fontSize: 14,
+    color: Colors.textMedium,
+  },
+  registerLink: {
+    fontSize: 14,
+    color: Colors.primary,
+    fontWeight: '600',
   },
 });

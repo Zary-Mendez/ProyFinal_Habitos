@@ -209,7 +209,6 @@ export default function RegisterScreen() {
             {/* Botón registro */}
             <TouchableOpacity style={styles.btnPrimary} onPress={handleRegister}>
               <Text style={styles.btnPrimaryText}>Crear cuenta</Text>
-              <Ionicons name="arrow-forward" size={20} color={Colors.white} />
             </TouchableOpacity>
 
             <View style={styles.loginContainer}>

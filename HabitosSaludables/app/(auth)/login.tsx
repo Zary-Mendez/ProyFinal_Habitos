@@ -159,7 +159,6 @@ export default function LoginScreen() {
 
             <TouchableOpacity style={styles.btnPrimary} onPress={handleLogin}>
               <Text style={styles.btnPrimaryText}>Iniciar sesión</Text>
-              <Ionicons name="arrow-forward" size={20} color={Colors.white} />
             </TouchableOpacity>
 
             <View style={styles.registerContainer}>
