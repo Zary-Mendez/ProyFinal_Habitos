@@ -176,7 +176,7 @@ export default function ProfileScreen() {
                 <View style={[styles.configIcon, { backgroundColor: Colors.primaryLight }]}>
                   <Ionicons name="information-circle" size={18} color={Colors.primary} />
                 </View>
-                <Text style={styles.configTitle}>HabitFlow v1.0.0</Text>
+                <Text style={styles.configTitle}>HabitFlow</Text>
               </View>
             </View>
 

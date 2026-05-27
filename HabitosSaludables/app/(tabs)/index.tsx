@@ -1,5 +1,3 @@
-// app/(tabs)/index.tsx
-
 import React, { useMemo } from 'react';
 import {
   View,
@@ -13,11 +11,12 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import Svg, { Circle } from 'react-native-svg';
 import { Colors } from '@/constants/theme';
 import { useApp } from '@/context/AppContext';
 import { getDailyQuote, CATEGORIES } from '@/data/mockData';
 
-// ─── Anillo de progreso (SVG puro con View/border) ────────────────────────────
+// ─── Anillo de progreso (SVG real con stroke-dashoffset) ──────────────────────
 
 interface ProgressRingProps {
   percent: number;
@@ -25,34 +24,42 @@ interface ProgressRingProps {
 }
 
 function ProgressRing({ percent, size = 120 }: ProgressRingProps) {
-  const completed = Math.round(percent);
-  const radius = size / 2;
+  const strokeWidth = 10;
+  const radius = (size - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (percent / 100) * circumference;
+  const center = size / 2;
 
   return (
     <View style={[styles.ringContainer, { width: size, height: size }]}>
-      {/* Pista de fondo */}
-      <View
-        style={[
-          styles.ringTrack,
-          { width: size, height: size, borderRadius: radius, borderColor: Colors.primaryLight },
-        ]}
-      />
-      {/* Relleno proporcional simulado con opacidad */}
-      <View
-        style={[
-          styles.ringFill,
-          {
-            width: size,
-            height: size,
-            borderRadius: radius,
-            borderColor: Colors.primary,
-            opacity: percent === 0 ? 0 : 1,
-          },
-        ]}
-      />
+      <Svg width={size} height={size} style={{ position: 'absolute' }}>
+        {/* Pista de fondo */}
+        <Circle
+          cx={center}
+          cy={center}
+          r={radius}
+          stroke={Colors.primaryLight}
+          strokeWidth={strokeWidth}
+          fill="none"
+        />
+        {/* Arco de progreso */}
+        <Circle
+          cx={center}
+          cy={center}
+          r={radius}
+          stroke={Colors.primary}
+          strokeWidth={strokeWidth}
+          fill="none"
+          strokeDasharray={circumference}
+          strokeDashoffset={strokeDashoffset}
+          strokeLinecap="round"
+          rotation="-90"
+          origin={`${center}, ${center}`}
+        />
+      </Svg>
       {/* Texto central */}
       <View style={styles.ringCenter}>
-        <Text style={styles.ringPercent}>{completed}%</Text>
+        <Text style={styles.ringPercent}>{Math.round(percent)}%</Text>
         <Text style={styles.ringLabel}>completado</Text>
       </View>
     </View>
@@ -166,11 +173,11 @@ export default function DashboardScreen() {
       >
         {/* Avatar + datos */}
         <View style={styles.card}>
-              <View style={styles.userInfo}>
-            <Text style={styles.userName}> ¡Hola, { user?.name || 'Usuario'}!</Text>
-            </View>
+          <View style={styles.userInfo}>
+            <Text style={styles.userName}> ¡Hola, {user?.name || 'Usuario'}!</Text>
           </View>
-        
+        </View>
+
         {/* ── Frase motivacional ── */}
         <View style={styles.quoteCard}>
           <Ionicons name="sparkles" size={16} color={Colors.primary} />
@@ -348,7 +355,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 4,
   },
-  
+
   userInfo: {
     flex: 1,
     justifyContent: 'center',
@@ -455,16 +462,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
-  },
-  ringTrack: {
-    position: 'absolute',
-    borderWidth: 8,
-  },
-  ringFill: {
-    position: 'absolute',
-    borderWidth: 8,
-    borderRightColor: 'transparent',
-    borderBottomColor: 'transparent',
   },
   ringCenter: {
     alignItems: 'center',
