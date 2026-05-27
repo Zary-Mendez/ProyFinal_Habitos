@@ -339,9 +339,8 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: Colors.white,
     borderRadius: 14,
-    borderWidth: 1,
     borderColor: Colors.border,
-    padding: 18,
+    padding: 36,
     marginBottom: 16,
     elevation: 2,
     shadowColor: Colors.shadow,
@@ -356,8 +355,9 @@ const styles = StyleSheet.create({
   },
   userName: {
     justifyContent: 'center',
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: '700',
+    top: 18,
     color: Colors.textDark,
   },
   goalBadge: {

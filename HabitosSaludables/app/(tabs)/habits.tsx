@@ -442,8 +442,8 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   addBtn: {
-    left: 350,
-    bottom: 20,
+    left: 330,
+    bottom: 45,
     width: 50,
     height: 50,
     borderRadius: 40,

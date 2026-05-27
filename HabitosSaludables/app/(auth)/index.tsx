@@ -6,21 +6,18 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image,
   SafeAreaView,
 } from 'react-native';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function WelcomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
-      {/* Nubes decorativas arriba */}
-      <View style={styles.topDecoration}>
-      </View>
+      <View style={styles.topDecoration} />
 
-      {/* Logo e ícono */}
       <View style={styles.logoContainer}>
         <View style={styles.iconCircle}>
-          <Text style={styles.iconEmoji}>🌿</Text>
+          <MaterialCommunityIcons name="leaf" size={36} color={Colors.primary} />
         </View>
         <Text style={styles.appName}>HabitFlow</Text>
         <Text style={styles.tagline}>
@@ -28,14 +25,27 @@ export default function WelcomeScreen() {
         </Text>
       </View>
 
-      {/* Features */}
       <View style={styles.featuresContainer}>
-        <FeatureItem emoji="🏃" text="Hábitos personalizados" sub="Actividad, sueño, nutrición y más" />
-        <FeatureItem emoji="🌸" text="Salud femenina integral" sub="Ciclo y bienestar en un solo lugar" />
-        <FeatureItem emoji="📊" text="Progreso y motivación" sub="Fechas, gráficas y recordatorios" />
+        <FeatureItem
+          icon={<Ionicons name="barbell-outline" size={20} color="#E57373" />}
+          iconBg="#FDECEA"
+          text="Hábitos personalizados"
+          sub="Actividad, sueño, nutrición y más"
+        />
+        <FeatureItem
+          icon={<MaterialCommunityIcons name="flower-tulip-outline" size={20} color="#EC407A" />}
+          iconBg="#FCE4EC"
+          text="Salud femenina integral"
+          sub="Ciclo y bienestar en un solo lugar"
+        />
+        <FeatureItem
+          icon={<Ionicons name="bar-chart-outline" size={20} color="#42A5F5" />}
+          iconBg="#E3F2FD"
+          text="Progreso y motivación"
+          sub="Fechas, gráficas y recordatorios"
+        />
       </View>
 
-      {/* Botones */}
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
           style={styles.btnPrimary}
@@ -62,17 +72,27 @@ export default function WelcomeScreen() {
   );
 }
 
-function FeatureItem({ emoji, text, sub }: { emoji: string; text: string; sub: string }) {
+function FeatureItem({
+  icon,
+  iconBg,
+  text,
+  sub,
+}: {
+  icon: React.ReactNode;
+  iconBg: string;
+  text: string;
+  sub: string;
+}) {
   return (
     <View style={styles.featureItem}>
-      <View style={styles.featureIcon}>
-        <Text style={styles.featureEmoji}>{emoji}</Text>
+      <View style={[styles.featureIcon, { backgroundColor: iconBg }]}>
+        {icon}
       </View>
       <View style={styles.featureText}>
         <Text style={styles.featureTitle}>{text}</Text>
         <Text style={styles.featureSub}>{sub}</Text>
       </View>
-      <Text style={styles.featureCheck}>✓</Text>
+      <Ionicons name="checkmark" size={18} color={Colors.primary} />
     </View>
   );
 }
