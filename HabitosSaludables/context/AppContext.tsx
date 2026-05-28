@@ -16,20 +16,22 @@ export interface Habit {
   id: string;
   title: string;
   category: HabitCategory;
-  icon: string;           // nombre del ícono de Ionicons / MaterialCommunity
+  icon: string;
   iconFamily: 'Ionicons' | 'MaterialCommunityIcons';
   color: string;
-  goal: number;           // meta numérica
-  unit: string;           // 'vasos', 'minutos', 'pasos', etc.
+  goal: number;
+  unit: string;
   frequency: 'daily' | 'weekdays' | 'weekends' | 'custom';
-  reminderTime?: string;  // 'HH:MM'
+  reminderTime?: string;
 }
 
 export interface DailyHabit extends Habit {
   completed: boolean;
-  progress: number;       // 0 a goal
-  completedAt?: string;   // ISO timestamp
+  progress: number;
+  completedAt?: string;
 }
+
+export type DayKey = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
 
 export interface UserProfile {
   name: string;
@@ -38,19 +40,20 @@ export interface UserProfile {
   selectedHabits: HabitCategory[];
   frequency: 'daily' | 'weekdays' | 'weekends' | 'custom';
   reminderTime: string;
-  dailyGoal: number;      // número de hábitos meta por día
+  dailyGoal: number;
+  customDays?: DayKey[]; // campo agregado
 }
 
 export interface DayRecord {
-  date: string;           // 'YYYY-MM-DD'
+  date: string;
   completed: number;
   total: number;
   habitIds: string[];
 }
 
 export interface FeminineCycleData {
-  lastPeriodStart?: string;  // 'YYYY-MM-DD'
-  cycleLength: number;       // días promedio
+  lastPeriodStart?: string;
+  cycleLength: number;
   currentPhase?: 'menstrual' | 'follicular' | 'ovulatory' | 'luteal';
   symptoms: string[];
 }
@@ -67,24 +70,17 @@ interface AppState {
 }
 
 interface AppContextValue extends AppState {
-  // Usuario
   setUser: (user: UserProfile) => void;
   updateProfile: (partial: Partial<UserProfile>) => void;
   completeOnboarding: (data: Omit<UserProfile, 'dailyGoal'> & { dailyGoal?: number }) => void;
   logout: () => void;
-
-  // Hábitos
   completeHabit: (habitId: string, progress?: number) => void;
   uncompleteHabit: (habitId: string) => void;
   addHabit: (habit: Omit<Habit, 'id'>) => void;
   removeHabit: (habitId: string) => void;
   updateHabit: (habitId: string, partial: Partial<Habit>) => void;
-
-  // Progreso
-  getTodayProgress: () => number;   // 0-100
-  getWeekProgress: () => number[];  // array de % por día
-
-  // Salud femenina
+  getTodayProgress: () => number;
+  getWeekProgress: () => number[];
   updateFeminineData: (data: Partial<FeminineCycleData>) => void;
 }
 
@@ -165,6 +161,7 @@ export const DEFAULT_USER: UserProfile = {
   frequency: 'daily',
   reminderTime: '08:00',
   dailyGoal: 3,
+  customDays: [],
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -204,7 +201,6 @@ function calculateStreak(history: DayRecord[]): { streak: number; bestStreak: nu
   let bestStreak = 0;
   let current = 0;
 
-  // Excluir hoy (último elemento) para el cálculo
   const past = history.slice(0, -1);
 
   for (let i = past.length - 1; i >= 0; i--) {
@@ -237,14 +233,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [bestStreak, setBestStreak] = useState(0);
   const [feminineData, setFeminineData] = useState<FeminineCycleData>(DEFAULT_FEMININE);
   const [isOnboarded, setIsOnboarded] = useState(false);
-  // Cargar nombre guardado al iniciar la app
-useEffect(() => {
-  AsyncStorage.getItem('userName').then((savedName) => {
-    if (savedName) {
-      setUserState({ ...DEFAULT_USER, name: savedName });
-        }
-      });
-    }, []);
+
+  useEffect(() => {
+    AsyncStorage.getItem('userName').then((savedName) => {
+      if (savedName) {
+        setUserState({ ...DEFAULT_USER, name: savedName });
+      }
+    });
+  }, []);
 
   // ── Usuario ──────────────────────────────────────────────────────────────
 
@@ -262,7 +258,6 @@ useEffect(() => {
       setUserState(profile);
       setIsOnboarded(true);
 
-      // Filtrar hábitos según categorías elegidas
       const filtered = DEFAULT_HABITS.filter((h) =>
         profile.selectedHabits.includes(h.category)
       );
@@ -309,7 +304,6 @@ useEffect(() => {
         })
       );
 
-      // Actualizar historial de hoy
       setWeekHistory((prev) => {
         const today = toISO(new Date());
         return prev.map((r) => {
